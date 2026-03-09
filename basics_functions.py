@@ -6,7 +6,7 @@ cv.waitKey(0)
 img_gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
 #cv.imshow("Penalty_1_Gray",img_gray)
 
-capture=cv.VideoCapture("Videos/VID_20260206_080321.mp4")
+capture=cv.VideoCapture("Videos/01.mp4")
 while True:
     isTrue,frame=capture.read()
     if isTrue:
