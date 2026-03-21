@@ -12,7 +12,7 @@ while True:
     if isTrue:
         blur_frame=cv.GaussianBlur(frame,(21,21),0)
         gray_frame=cv.cvtColor(blur_frame,cv.COLOR_BGR2GRAY)
-        Canny_frame=cv.Canny(gray_frame,10,30)
+        Canny_frame=cv.Canny(gray_frame,10,15)
         cv.imshow("Video",Canny_frame)
         if cv.waitKey(20) & 0xFF==ord('d'):
             break
