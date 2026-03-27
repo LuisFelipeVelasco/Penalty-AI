@@ -3,13 +3,12 @@ import numpy as np
 
 def lines_function(img_canny, img):
     global last_lines
-    # Subí el maxLineGap a 100 para que salte el pie del arquero
-    detected_lines = cv.HoughLinesP(img_canny, 1, np.pi/180, 80, 
-                                     minLineLength=120, maxLineGap=25)
     
-    # SI DETECTÓ LÍNEAS: las dibujamos y actualizamos la memoria
+    #Hough Transform to detect lines in the image
+    detected_lines = cv.HoughLinesP(img_canny, 1, np.pi/180, 80, 
+                                     minLineLength=120, maxLineGap=25) 
     if detected_lines is not None:
-        last_lines = detected_lines # Guardamos en memoria
+        last_lines = detected_lines 
         for line in detected_lines:
             x1, y1, x2, y2 = line[0]
             cv.line(img, (x1, y1), (x2, y2), (0, 0, 255), 1)
