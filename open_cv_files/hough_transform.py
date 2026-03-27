@@ -12,7 +12,7 @@ def lines_function(img_canny, img):
         last_lines = detected_lines # Guardamos en memoria
         for line in detected_lines:
             x1, y1, x2, y2 = line[0]
-            cv.line(img, (x1, y1), (x2, y2), (0, 0, 255), 3)
+            cv.line(img, (x1, y1), (x2, y2), (0, 0, 255), 1)
     return img
 
 Capture=cv.VideoCapture("Videos/07.mp4")
