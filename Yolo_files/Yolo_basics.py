@@ -22,7 +22,7 @@ def evaluate_change(x1,x2,y1,y2,last_coordinates):
 
 #Call the function to load the model and store it in result variable
 #Theres is multple suffix nano, small, medium, large, xlarge
-model=load_model("yolov8n.pt")
+model=load_model("yolov8s.pt")
 #The model make the object detection in the image 
 results=model("Images/Penalty_1.png")
 #Inserts the bounding boxes and labels into the image
