@@ -2,6 +2,7 @@ import cv2 as cv
 import numpy as np
 
 x1_old, y1_old, x2_old, y2_old = 0, 0, 0, 0
+frame =0
 def region_of_interest(img):
     height=img.shape[0]
     width=img.shape[1]
@@ -23,34 +24,38 @@ def lines_function(img_borders, img):
                                      minLineLength=120, maxLineGap=30)
     #The old coordinate values of the line to be used in case the new detected line is not valid
     global x1_old, y1_old, x2_old, y2_old 
+    global frame
     #Set of lines with slope between 1 and 2 to be validated as goal line candidates
     validate_lines=[]
     #List of x1 values of the lines to be used to select the line with the smallest x1 value as the goal line candidate 
-    x1_values=[]
+    x2_values=[]
     if detected_lines is not None:
         for line in detected_lines:
             x1, y1, x2, y2 = line[0] #The coordinates of the detected line
             m=(y2-y1)/(x2-x1) #The slope of the detected line
             if m>1 and m<2:
+                #cv.line(img, (int(x1),int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
                 validate_lines.append([x1,y1,x2,y2])
-                x1_values.append(x1)
-        if len(x1_values)!=0: #If there are lines with slope between 1 and 2, select the line with the smallest x1 value as the goal line candidate
-            max_x1_value=min(x1_values)
-            index=x1_values.index(max_x1_value)
+                x2_values.append(x2)
+        if len(x2_values)!=0: #If there are lines with slope between 1 and 2, select the line with the smallest x1 value as the goal line candidate
+            max_x2_value=min(x2_values)
+            print(max_x2_value)
+            index=x2_values.index(max_x2_value)
             goal_line=validate_lines[index]
             x1, y1, x2, y2 = goal_line #The coordinates of the goal line candidate
         else :
             x1, y1, x2, y2 = x1_old, y1_old, x2_old, y2_old #If there are no lines with slope between 1 and 2, use the old coordinates of the line
 
-        print(x1,"-",x1_old)
+        #print(x1,"-",x1_old)
         #If the new detected line has a big difference in coordinates compared to the old line, it is not valid and the old line coordinates are used instead. This is to avoid sudden changes in the detected line due to noise or other factors.
         if ((abs(x1-x1_old)>15 or abs(y1-y1_old)>15 or abs(x2-x2_old)>15 or abs(y2-y2_old)>15) and x1_old!=0): #
             x1,y1,x2,y2=x1_old, y1_old, x2_old, y2_old
         #if the new  detected line has a small difference in coordinates compared to the old line, it is valid and the new line coordinates are used and stored as the old line coordinates for the next iteration
-        elif (len(x1_values)!=0):
+        elif (len(x2_values)!=0):
             x1_old, y1_old, x2_old, y2_old = goal_line
         #Draw the detected line on the image
-        cv.line(img, (int(x1),int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)        
+        cv.line(img, (int(x1),int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)
+        frame+=1        
         return img
 
     # if detected_lines is not None:
@@ -70,7 +75,7 @@ def lines_function(img_borders, img):
         cv.line(img, (int(x1_old), int(y1_old)), (int(x2_old), int(y2_old)), (0, 0, 255), 2)
         return img
 
-Video=cv.VideoCapture("Videos/31.mp4")
+Video=cv.VideoCapture("Videos/40.mp4")
 while True:
     isTrue,Frame=Video.read()
     if isTrue:
