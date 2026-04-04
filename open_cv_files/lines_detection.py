@@ -34,7 +34,6 @@ def lines_function(img_borders, img):
             x1, y1, x2, y2 = line[0] #The coordinates of the detected line
             m=(y2-y1)/(x2-x1) #The slope of the detected line
             if m>1 and m<2:
-                #cv.line(img, (int(x1),int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
                 validate_lines.append([x1,y1,x2,y2])
                 x2_values.append(x2)
         if len(x2_values)!=0: #If there are lines with slope between 1 and 2, select the line with the smallest x1 value as the goal line candidate
@@ -46,7 +45,6 @@ def lines_function(img_borders, img):
         else :
             x1, y1, x2, y2 = x1_old, y1_old, x2_old, y2_old #If there are no lines with slope between 1 and 2, use the old coordinates of the line
 
-        #print(x1,"-",x1_old)
         #If the new detected line has a big difference in coordinates compared to the old line, it is not valid and the old line coordinates are used instead. This is to avoid sudden changes in the detected line due to noise or other factors.
         if ((abs(x1-x1_old)>15 or abs(y1-y1_old)>15 or abs(x2-x2_old)>15 or abs(y2-y2_old)>15) and x1_old!=0): #
             x1,y1,x2,y2=x1_old, y1_old, x2_old, y2_old
@@ -54,21 +52,8 @@ def lines_function(img_borders, img):
         elif (len(x2_values)!=0):
             x1_old, y1_old, x2_old, y2_old = goal_line
         #Draw the detected line on the image
-        cv.line(img, (int(x1),int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)
-        frame+=1        
+        cv.line(img, (int(x1),int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)      
         return img
-
-    # if detected_lines is not None:
-    #     print(detected_lines.argmin)
-    #     for line in detected_lines:
-    #         x1, y1, x2, y2 = line[0]
-    #         m=(y2-y1)/(x2-x1)
-    #         if m>1 and m<2:
-    #             #print(x1, y1, x2, y2)
-    #             cv.line(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
-    #     global detected_lines_memory
-    #     detected_lines_memory = detected_lines
-    #     return img
     
     else:
         #for line in detected_lines_memory:
