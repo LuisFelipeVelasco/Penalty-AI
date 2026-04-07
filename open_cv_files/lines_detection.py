@@ -3,10 +3,10 @@ import numpy as np
 
 x1_old, y1_old, x2_old, y2_old = 0, 0, 0, 0
 frame =0
-def region_of_interest(img):
+def region_of_interest(img,x0,y0,x1,y1):
     height=img.shape[0]
     width=img.shape[1]
-    polygon=np.array([[(5*width/8,5*height/8),(5*width/8,7*height/9),(7.5*width/10,7*height/9),(7.5*width/10,5*height/8)]],np.int32)
+    polygon=np.array([[(x0,y0),(x0,y1),(x1,y1),(x1,y0)]],np.int32)
     mask=np.zeros_like(img)
     cv.fillPoly(mask,polygon,(255,255,255))
     return cv.bitwise_and(img,mask)
@@ -64,7 +64,9 @@ Video=cv.VideoCapture("Videos/40.mp4")
 while True:
     isTrue,Frame=Video.read()
     if isTrue:
-        Roi=region_of_interest(Frame)
+        height=Frame.shape[0]
+        width=Frame.shape[1]                                                                          
+        Roi=region_of_interest(Frame,5*width/8,5*height/8,7.5*width/10,7*height/9)
         White_video=detect_colors(Roi)
         Video_dilated=cv.dilate(White_video,(3,3),iterations=2)
         canny_video=cv.Canny(Video_dilated,20,50)

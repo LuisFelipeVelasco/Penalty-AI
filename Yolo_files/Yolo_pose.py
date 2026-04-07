@@ -22,7 +22,7 @@ def region_of_interest(img):
     cv.fillPoly(mask,polygon,(255,255,255))
     return cv.bitwise_and(img,mask)
         
-model=load_model("yolo11x-pose.pt")
+model=load_model("yolo11m-pose.pt")
 img=cv.imread("Images/Penalty_1.png")
 roi=region_of_interest(img)
 results=model(roi)
