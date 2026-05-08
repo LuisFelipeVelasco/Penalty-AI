@@ -108,6 +108,9 @@ Video=cv.VideoCapture("Videos/14.mp4")
 last_coordinates=[]
 global is_significant_change 
 is_significant_change=False
+model1=load_model("yolo11l-pose.pt")
+model2=load_model("yolov8m.pt")
+
 while True:
     isTrue,Frame=Video.read()
     if isTrue:      
@@ -115,9 +118,8 @@ while True:
         width=Frame.shape[1]
         
         #Detect position foot keypoints using Yolo pose estimation model
-        model=load_model("yolo11l-pose.pt")
         roi_detect_foot=region_of_interest(Frame,width/2,0,width, height)
-        results=model(roi_detect_foot)
+        results=model1(roi_detect_foot)
         Foot_points_coordinate(results)
         coordinates=Foot_points_coordinate(results)
 
@@ -135,8 +137,7 @@ while True:
              put_text_on_image(Frame,"The goalkeeper is not on line",0,0,255)
 
         #Detect when the shooter shoots the ball
-        model=load_model("yolov8m.pt")
-        results=model(Frame)
+        results=model2(Frame)
         result=results[0].plot()
         for box in results[0].boxes: #boxes is used to get the bounding box coordinates
             if box.cls==32: #If the class of the box is 32 (which corresponds to a soccer ball in the COCO dataset)
