@@ -108,8 +108,8 @@ Video=cv.VideoCapture("Videos/14.mp4")
 last_coordinates=[]
 global is_significant_change 
 is_significant_change=False
-model1=load_model("yolo11n-pose.pt")
-model2=load_model("yolov8n.pt")
+model1=load_model("yolo11l-pose.pt")
+model2=load_model("yolov8l.pt")
 
 while True:
     isTrue,Frame=Video.read()
@@ -119,9 +119,9 @@ while True:
         
         #Detect position foot keypoints using Yolo pose estimation model
         roi_detect_foot=region_of_interest(Frame,width/2,0,width, height)
-        results=model1(roi_detect_foot)
-        Foot_points_coordinate(results)
-        coordinates=Foot_points_coordinate(results)
+        results_pose=model1(roi_detect_foot)
+        Foot_points_coordinate(results_pose)
+        coordinates=Foot_points_coordinate(results_pose)
 
         #Detect position of the goal line using Hough Line algorithm
         roi_detect_line=region_of_interest(Frame,5*width/8,5*height/8,7.5*width/10,7*height/9)
@@ -137,18 +137,20 @@ while True:
              put_text_on_image(Frame,"The goalkeeper is not on line",0,0,255)
 
         #Detect when the shooter shoots the ball
-        results=model2(Frame)
-        result=results[0].plot()
-        for box in results[0].boxes: #boxes is used to get the bounding box coordinates
+        roi_detect_shoot=region_of_interest(Frame,0,0,width/2, height)
+        results_object=model2(roi_detect_shoot)
+        for box in results_object[0].boxes: #boxes is used to get the bounding box coordinates
             if box.cls==32: #If the class of the box is 32 (which corresponds to a soccer ball in the COCO dataset)
                 x1,y1,x2,y2=box.xyxy[0].tolist() #We use list unpacking to get the coordinates of the bounding box of the soccer ball
                 if last_coordinates: 
                     is_significant_change = evaluate_change(x1, x2, y1, y2, last_coordinates)
                 last_coordinates=[x1,y1,x2,y2]
-        result=results[0].plot()
+        results_object=model2(Frame)
+        result=results_object[0].plot()
         x1_line, y1_line, x2_line, y2_line = Line_Frame
         cv.line(result, (int(x1_line),int(y1_line)), (int(x2_line), int(y2_line)), (0, 0, 255), 2) #Draw the detected line on the image                         
         cv.imshow("Video",result)
+        print(is_significant_change)
         if is_significant_change: #if the position of the soccer ball change show that frame with the bounding boxes and stop the video
             
             cv.imshow("Video", result)
