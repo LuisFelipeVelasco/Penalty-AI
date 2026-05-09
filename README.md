@@ -29,7 +29,7 @@ The core idea: combine classical Computer Vision (OpenCV) with modern deep learn
 | `sqlalchemy` | ≥ 2.0.0 | Utility import used in exploratory YOLO scripts |
 
 ### YOLO Models Used
-- **`yolov8s.pt` / `yolov8m.pt`** — Object detection to locate the soccer ball (COCO class 32)
+- **`yolov8s.pt` / `yolov8l.pt`** — Object detection to locate the soccer ball (COCO class 32)
 - **`yolo11m-pose.pt` / `yolo11l-pose.pt`** — Pose estimation to extract goalkeeper foot keypoints
 
 ---
