@@ -108,8 +108,8 @@ Video=cv.VideoCapture("Videos/14.mp4")
 last_coordinates=[]
 global is_significant_change 
 is_significant_change=False
-model1=load_model("yolo11l-pose.pt")
-model2=load_model("yolov8m.pt")
+model1=load_model("yolo11n-pose.pt")
+model2=load_model("yolov8n.pt")
 
 while True:
     isTrue,Frame=Video.read()
