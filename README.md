@@ -5,6 +5,7 @@
 ---
 
 https://github.com/user-attachments/assets/0b5631c9-e6aa-48fa-b457-2615d5c337cf
+
 ## 🎯 Purpose
 
 In professional football, a penalty kick referee decision is one of the most disputed moments in the game. One of the key rules is that the **goalkeeper must remain on the goal line** until the ball is kicked. Detecting this violation in real time is difficult for human referees.
@@ -38,12 +39,12 @@ The core idea: combine classical Computer Vision (OpenCV) with modern deep learn
 
 ### Prerequisites
 - Python **3.9 or higher**
-- A machine with a webcam or video files in a `Videos/` folder
+- A machine with a webcam or video files in the `Media/Videos/` folder
 - (Optional but recommended) a GPU for faster YOLO inference
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/Penalty-AI.git
+git clone https://github.com/LuisFelipeVelasco/Penalty-AI.git
 cd Penalty-AI
 ```
 
@@ -68,18 +69,21 @@ The YOLO models are downloaded automatically by the `ultralytics` library on fir
 - `yolov8m.pt`
 - `yolo11l-pose.pt`
 
-### 5. Add your video files
-Place your penalty kick video files inside a `Videos/` folder at the project root:
+### 5. Organize your media files
+Place your penalty kick video files inside the `Media/Videos/` folder:
 ```
 Penalty-AI/
-└── Videos/
-    ├── 14.mp4
-    └── ...
+└── Media/
+    └── Videos/
+        ├── 14.mp4
+        └── ...
 ```
+
+Processed images and results will be saved to `Media/Images/`.
 
 ### 6. Run the main program
 ```bash
-python Program.py
+python vision_processing/main.py
 ```
 
 The program will process the video frame by frame and pause automatically when it detects the **moment the ball is kicked**, displaying whether the goalkeeper was on the line or not.
@@ -91,25 +95,28 @@ The program will process the video frame by frame and pause automatically when i
 ```
 Penalty-AI/
 │
-├── Program.py                  # 🚀 Main entry point — full pipeline
+├── vision_processing/          # 🔬 Core processing pipeline
+│   ├── main.py                 # 🚀 Main entry point — full pipeline
+│   ├── detection/              # 📦 Object detection & YOLO models
+│   │   ├── yolo_detector.py    # Ball detection and kick moment detection
+│   │   └── pose_estimator.py   # Goalkeeper pose estimation & foot keypoints
+│   ├── analysis/               # 📊 Computer vision analysis
+│   │   ├── line_detector.py    # Goal line detection with Hough Transform
+│   │   ├── color_filter.py     # HSV color filtering to isolate white lines
+│   │   └── edge_processing.py  # Canny edge detection & image preprocessing
+│   └── utils/                  # 🛠️ Helper functions
+│       ├── frame_utils.py      # Frame reading, resizing, drawing
+│       ├── roi_handler.py      # Region of Interest masking with polygons
+│       └── validators.py       # Validation and filtering utilities
 │
-├── open_cv_files/              # 📦 OpenCV exploration & building blocks
-│   ├── read.py                 # Basic video capture and frame resizing
-│   ├── basics_functions.py     # Grayscale, blur, Canny edge detection basics
-│   ├── drawing.py              # Drawing text and shapes on frames
-│   ├── detect_colors.py        # HSV color filtering to isolate white lines
-│   ├── ROI.py                  # Region of Interest masking with polygons
-│   ├── hough_transform.py      # Hough Line Transform experiments
-│   └── lines_detection.py      # Refined goal line detection with slope filtering
+├── Media/                      # 📁 Input videos & output results
+│   ├── Videos/                 # Input penalty kick videos (not tracked by git)
+│   │   └── 14.mp4
+│   └── Images/                 # Output processed images & results
 │
-├── Yolo_files/                 # 🤖 YOLO exploration & building blocks
-│   ├── Yolo_basics.py          # Ball detection and kick moment detection
-│   └── Yolo_pose.py            # Goalkeeper pose estimation & foot keypoints
-│
-├── Images/                     # Static test images
-├── Videos/                     # Input penalty kick videos (not tracked by git)
 ├── requirements.txt            # Python dependencies
-└── LICENSE
+├── LICENSE                     # Apache 2.0 License
+└── README.md                   # This file
 ```
 
 ---
@@ -163,8 +170,9 @@ Working on this project provided hands-on experience with several important Comp
 - Combining **two YOLO models** (detection + pose) in a single pipeline is computationally expensive; a GPU is strongly recommended.
 
 **System Design**
-- Separating the codebase into **exploratory scripts** (`open_cv_files/`, `Yolo_files/`) and a **final integrated program** (`Program.py`) is a good practice for iterative development in CV projects.
-- Processing video **frame by frame** in a while loop gives full control over the analysis pipeline and allows pausing at key moments (the kick).
+- Organizing code into **focused modules** (`detection/`, `analysis/`, `utils/`) improves maintainability and testability.
+- Separating **pipeline configuration** from **implementation logic** makes it easier to experiment with different parameters.
+- Processing video **frame by frame** in a main loop gives full control over the analysis pipeline and allows pausing at key moments (the kick).
 
 ---
 
@@ -173,4 +181,3 @@ Working on this project provided hands-on experience with several important Comp
 - The goal line detection is calibrated for a specific camera angle — a more robust solution would involve **camera calibration** and **homography** to normalize the perspective.
 
 ---
-
