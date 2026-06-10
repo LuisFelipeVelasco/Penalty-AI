@@ -1,12 +1,12 @@
 import cv2 as cv
 from ultralytics import YOLO
 import numpy as np
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
 
 x1_old, y1_old, x2_old, y2_old = 0, 0, 0, 0
 frame =0
 def region_of_interest(img,x0,y0,x1,y1):
-    height=img.shape[0]
-    width=img.shape[1]
     polygon=np.array([[(x0,y0),(x0,y1),(x1,y1),(x1,y0)]],np.int32)
     mask=np.zeros_like(img)
     cv.fillPoly(mask,polygon,(255,255,255))
@@ -104,7 +104,7 @@ def evaluate_change(x1,x2,y1,y2,last_coordinates):
     else:
         return False
 
-Video=cv.VideoCapture("Videos/14.mp4")
+Video=cv.VideoCapture(os.path.join(BASE, "../Media/Videos/14.mp4"))
 last_coordinates=[]
 global is_significant_change 
 is_significant_change=False

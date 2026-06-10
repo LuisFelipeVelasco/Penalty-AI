@@ -2,6 +2,8 @@ from sqlalchemy import true
 from ultralytics import YOLO
 import cv2 as cv
 import numpy as np
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
 
 #Load the Yolo model
 def load_model(model_path):
@@ -24,11 +26,11 @@ def evaluate_change(x1,x2,y1,y2,last_coordinates):
 #Theres is multple suffix nano, small, medium, large, xlarge
 model=load_model("yolov8s.pt")
 #The model make the object detection in the image 
-results=model("Images/Penalty_1.png")
+results=model(os.path.join(BASE, "../../Media/Images/Penalty_1.png"))
 #Inserts the bounding boxes and labels into the image
 img = results[0].plot()
 
-capture=cv.VideoCapture("Videos/06.mp4")
+capture=cv.VideoCapture(os.path.join(BASE, "../../Media/Videos/06.mp4"))
 last_coordinates=[]
 global is_significant_change 
 is_significant_change=False

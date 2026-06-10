@@ -1,5 +1,7 @@
 import cv2 as cv
 import numpy as np
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
 
 def lines_function(img_canny, img):
     global last_lines
@@ -14,7 +16,7 @@ def lines_function(img_canny, img):
             cv.line(img, (x1, y1), (x2, y2), (0, 0, 255), 1)
     return img
 
-Capture=cv.VideoCapture("Videos/07.mp4")
+Capture=cv.VideoCapture(os.path.join(BASE, "../../Media/Videos/07.mp4"))
 
 while True:
     isTrue,Frame=Capture.read()

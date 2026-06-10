@@ -1,5 +1,7 @@
 import cv2 as cv
 import numpy as np
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
 
 def detect_colors(img):
     img_hsv=cv.cvtColor(img,cv.COLOR_BGR2HSV) #Become HSV to detect colors Hue, S Saturation, V Value
@@ -11,7 +13,7 @@ def detect_colors(img):
     mask=cv.inRange(img_hsv,white_lower,white_upper) #Mask to detect white color
     return mask 
 
-capture=cv.VideoCapture("Videos/06.mp4")
+capture=cv.VideoCapture(os.path.join(BASE, "../../Media/Videos/06.mp4"))
 while True:
     isTrue,Frame=capture.read()
     if isTrue:

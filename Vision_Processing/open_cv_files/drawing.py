@@ -1,5 +1,7 @@
 import cv2 as cv
 import numpy as np          
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
 
 def rescaleFrame(Frame,scale=0.30):
     width=int(Frame.shape[1]*scale)
@@ -7,7 +9,7 @@ def rescaleFrame(Frame,scale=0.30):
     dimensions=(width,height)
     return cv.resize(Frame,dimensions,interpolation=cv.INTER_AREA)
 
-Capture=cv.VideoCapture("Videos/02.mp4")
+Capture=cv.VideoCapture(os.path.join(BASE, "../../Media/Videos/02.mp4"))
 
 while True:
     isTrue,Frame=Capture.read()

@@ -1,6 +1,8 @@
 import cv2 as cv
 from ultralytics import YOLO
 import numpy as np
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
 
 #Load the Yolo model
 def load_model(model_path):
@@ -23,7 +25,7 @@ def region_of_interest(img):
     return cv.bitwise_and(img,mask)
         
 model=load_model("yolo11m-pose.pt")
-img=cv.imread("Images/Penalty_1.png")
+img=cv.imread(os.path.join(BASE, "../../Media/Images/Penalty_1.png"))
 roi=region_of_interest(img)
 results=model(roi)
 result=results[0].plot() #Draw the keypoints and bounderies boxes in the image

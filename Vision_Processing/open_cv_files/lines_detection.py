@@ -1,5 +1,7 @@
 import cv2 as cv
 import numpy as np
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
 
 x1_old, y1_old, x2_old, y2_old = 0, 0, 0, 0
 frame =0
@@ -60,7 +62,7 @@ def lines_function(img_borders, img):
         cv.line(img, (int(x1_old), int(y1_old)), (int(x2_old), int(y2_old)), (0, 0, 255), 2)
         return img
 
-Video=cv.VideoCapture("Videos/40.mp4")
+Video=cv.VideoCapture(os.path.join(BASE, "../../Media/Videos/40.mp4"))
 while True:
     isTrue,Frame=Video.read()
     if isTrue:

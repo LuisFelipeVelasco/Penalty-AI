@@ -1,5 +1,7 @@
 import cv2 as cv
 import numpy as np
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
 
 def region_of_interest(img):
     height=img.shape[0]
@@ -9,7 +11,7 @@ def region_of_interest(img):
     cv.fillPoly(mask,polygon,(255,255,255))
     return cv.bitwise_and(img,mask)
 
-capture=cv.VideoCapture("Videos/06.mp4")
+capture=cv.VideoCapture(os.path.join(BASE, "../../Media/Videos/06.mp4"))
 while True:
     isTrue,Frame=capture.read()
     if isTrue:
